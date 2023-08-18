@@ -70,6 +70,15 @@ class ModelAdapter : RecyclerView.Adapter<ModelAdapter.ModelPlan>()
                 DetailInformation.allcarbs -= ((resultmodel?.v.toString().toDouble() / 100).toDouble() * resultmodel?.carbs.toString().toDouble())
                 DetailInformation.ischanged = true
             }
+            if(resultmodel?.whereFood == 2){
+                InsaneMemory.secondobj -= 100f; InsaneMemory.thirdobj -= 100f; InsaneMemory.tempobj -= 100f
+            }
+            if(resultmodel?.whereFood == 0){
+                InsaneMemory.thirdobj -= 100f
+            }
+            if (resultmodel?.whereFood == 1){
+                InsaneMemory.lastobj -= 100f
+            }
             notifyItemRemoved(result)
         }
         catch (e:Exception){ }

@@ -1,25 +1,28 @@
 package com.example.anidea
 
+import android.R.attr.height
+import android.R.attr.width
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.example.anidea.databinding.ActivityMainBinding
-import com.example.anidea.databinding.ActivityNewfoodBinding
 import com.example.anidea.size.adapter
 import com.example.anidea.size.adaptery
 import com.example.anidea.size.adapterz
-import java.math.RoundingMode
-import java.text.DecimalFormat
 import kotlin.math.roundToInt
+
 
 object DetailInformation
 {
@@ -28,6 +31,14 @@ object DetailInformation
     public var allcarbs:Double = 0.toDouble()
     public var allfats:Double = 0.toDouble()
     public var ischanged = false
+}
+object InsaneMemory
+{
+    var secondobj:Float = 0f
+    var thirdobj:Float = 0f
+    var tempobj:Float = 0f
+    var lastobj:Float = 0f
+    var nowopenedobj:Float = 0f
 }
 object GoalInformation
 {
@@ -58,12 +69,15 @@ class MainActivity : AppCompatActivity(){
 
                 when(result.data?.getStringExtra("WhatTheTime").toString()){
                     "Breakfast" -> {val mtemp:Model = Model(result.data?.getStringExtra("Name").toString(),tempstr,result.data?.getStringExtra("potein").toString(),result.data?.getStringExtra("calories").toString(),result.data?.getStringExtra("fat").toString(),result.data?.getStringExtra("carb").toString(),2, result.data?.getStringExtra("Image")?.toUri())
-                        adapterz.addNote(mtemp)}
+                        adapterz.addNote(mtemp)
+                        InsaneMemory.secondobj += 100f; InsaneMemory.thirdobj += 100f; InsaneMemory.tempobj += 100f}
                     "Dinner" -> {val mtemp:Model = Model(result.data?.getStringExtra("Name").toString(),tempstr,result.data?.getStringExtra("potein").toString(),result.data?.getStringExtra("calories").toString(),result.data?.getStringExtra("fat").toString(),result.data?.getStringExtra("carb").toString(),0, result.data?.getStringExtra("Image")?.toUri())
-                        adapter.addNote(mtemp)}
+                        adapter.addNote(mtemp)
+                        InsaneMemory.thirdobj += 100f}
                     "Lunch" -> {val mtemp:Model = Model(result.data?.getStringExtra("Name").toString(),tempstr,result.data?.getStringExtra("potein").toString(),result.data?.getStringExtra("calories").toString(),result.data?.getStringExtra("fat").toString(),result.data?.getStringExtra("carb").toString(),1, result.data?.getStringExtra("Image")?.toUri())
-                        adaptery.addNote(mtemp)}
+                        adaptery.addNote(mtemp); InsaneMemory.lastobj += 100f}
                 }
+                makeinsane()
             }
         }
         launch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -98,62 +112,105 @@ class MainActivity : AppCompatActivity(){
             launch.launch(i)
         }
         BindingClass.imageView3.setOnClickListener(){
-            BindingClass.imageView3.animate().apply {
-                duration = 500
-                rotationBy(540f)
-            }.start()
-            if(BindingClass.allitemslayout.visibility == View.GONE){
-                TransitionManager.beginDelayedTransition(BindingClass.cardView,AutoTransition())
-                BindingClass.allitemslayout.visibility = View.VISIBLE
-            }
-            else{
-                TransitionManager.beginDelayedTransition(BindingClass.cardView,AutoTransition())
-                BindingClass.allitemslayout.visibility = View.GONE
-            }
+                BindingClass.imageView3.animate().apply {
+                    duration = 500
+                    rotationBy(540f)
+                }.start()
+                if(BindingClass.allitemslayout.visibility == View.GONE){
+                    TransitionManager.beginDelayedTransition(BindingClass.cardView,AutoTransition())
+                    BindingClass.allitemslayout.visibility = View.VISIBLE
+                    InsaneMemory.nowopenedobj += InsaneMemory.thirdobj
+                    makeinsane()
+                }
+                else{
+                    TransitionManager.beginDelayedTransition(BindingClass.cardView,AutoTransition())
+                    BindingClass.allitemslayout.visibility = View.GONE
+                    InsaneMemory.nowopenedobj -= InsaneMemory.thirdobj
+                    makeinsane(true)
+                }
         }
         BindingClass.imageView4.setOnClickListener(){
-            BindingClass.imageView4.animate().apply {
-                duration = 500
-                rotationBy(540f)
-            }.start()
-            if(BindingClass.allitemslayout0.visibility == View.GONE){
-                TransitionManager.beginDelayedTransition(BindingClass.cardView0,AutoTransition())
-                BindingClass.allitemslayout0.visibility = View.VISIBLE
-            }
-            else{
-                TransitionManager.beginDelayedTransition(BindingClass.cardView0,AutoTransition())
-                BindingClass.allitemslayout0.visibility = View.GONE
-            }
+                BindingClass.imageView4.animate().apply {
+                    duration = 500
+                    rotationBy(540f)
+                }.start()
+                if (BindingClass.allitemslayout0.visibility == View.GONE) {
+                    TransitionManager.beginDelayedTransition(
+                        BindingClass.cardView0,
+                        AutoTransition()
+                    )
+                    InsaneMemory.nowopenedobj += InsaneMemory.lastobj
+                    BindingClass.allitemslayout0.visibility = View.VISIBLE
+                } else {
+                    TransitionManager.beginDelayedTransition(
+                        BindingClass.cardView0,
+                        AutoTransition()
+                    )
+                    BindingClass.allitemslayout0.visibility = View.GONE
+                    InsaneMemory.nowopenedobj -= InsaneMemory.thirdobj
+                }
+                makeinsane()
         }
+
         BindingClass.imageView2.setOnClickListener(){
-            BindingClass.imageView2.animate().apply {
-                duration = 500
-                rotationBy(540f)
-            }.start()
-            if(BindingClass.allitemslayout1.visibility == View.GONE){
-                TransitionManager.beginDelayedTransition(BindingClass.cardView1,AutoTransition())
-                BindingClass.allitemslayout1.visibility = View.VISIBLE
-            }
-            else{
-                TransitionManager.beginDelayedTransition(BindingClass.cardView1,AutoTransition())
-                BindingClass.allitemslayout1.visibility = View.GONE
-            }
+                BindingClass.imageView2.animate().apply {
+                    duration = 500
+                    rotationBy(540f)
+                }.start()
+                if (BindingClass.allitemslayout1.visibility == View.GONE) {
+                    TransitionManager.beginDelayedTransition(
+                        BindingClass.cardView1,
+                        AutoTransition()
+                    )
+                    BindingClass.allitemslayout1.visibility = View.VISIBLE
+                    InsaneMemory.nowopenedobj += InsaneMemory.secondobj
+                    makeinsane()
+                } else {
+                    TransitionManager.beginDelayedTransition(
+                        BindingClass.cardView1,
+                        AutoTransition()
+                    )
+                    BindingClass.allitemslayout1.visibility = View.GONE
+                    InsaneMemory.nowopenedobj -= InsaneMemory.secondobj
+                    makeinsane(true)
+                }
         }
         init()
 
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
-
+                Log.d("LeshkaDebug",InsaneMemory.nowopenedobj.toString())
+                if(BindingClass.CaloriesDetailCardView.alpha == 0f){
+                    BindingClass.CaloriesDetailCardView.animate().apply {
+                        duration = 150
+                        alpha(1f)
+                    }
+                }
                 if(DetailInformation.ischanged){
                     BindingClass.textView10.text = DetailInformation.allcalories.roundToInt().toString() + " / " + GoalInformation.allcalories.roundToInt()
                     BindingClass.textView61.text = "Б\n" + DetailInformation.allproteins.roundToInt().toString() + " / " + GoalInformation.allproteins.roundToInt()
                     BindingClass.textView81.text = "Ж\n" + DetailInformation.allfats.roundToInt().toString() + " / " + GoalInformation.allfats.roundToInt()
                     BindingClass.textView9.text = "У\n" + DetailInformation.allcarbs.roundToInt().toString() + " / " + GoalInformation.allcarbs.roundToInt()
                     DetailInformation.ischanged = false
-                }
 
-                handler.postDelayed(this, 10)
+
+                    InsaneMemory.nowopenedobj = 0f
+                    if(BindingClass.allitemslayout1.visibility == View.VISIBLE)
+                    {
+                        InsaneMemory.nowopenedobj += InsaneMemory.secondobj
+                    }
+                    if(BindingClass.allitemslayout0.visibility == View.VISIBLE)
+                    {
+                        InsaneMemory.nowopenedobj += InsaneMemory.thirdobj
+                    }
+                    if(BindingClass.allitemslayout.visibility == View.VISIBLE)
+                    {
+                        InsaneMemory.nowopenedobj += InsaneMemory.lastobj
+                    }
+                    makeinsane()
+                }
+                handler.postDelayed(this, 100)
             }
         }, 0)
         TransitionManager.beginDelayedTransition(BindingClass.cardView,AutoTransition())
@@ -175,5 +232,87 @@ class MainActivity : AppCompatActivity(){
         BindingClass.recyclerView1.layoutManager = GridLayoutManager(this@MainActivity,1)
         BindingClass.recyclerView1.adapter = adapterz
 
+    }
+    var strvdasgfv = "\n"
+    fun allsize(size:Int){
+        strvdasgfv = ""
+        if (size != 0){
+            for(i in 0..size){
+                strvdasgfv += "\n"
+            }
+        }
+        BindingClass.theheightofthepage.text = strvdasgfv
+        BindingClass.CaloriesDetailCardView.alpha = 0f
+    }
+    fun makeinsane(IsClosing:Boolean = false){
+        if(InsaneMemory.nowopenedobj >= 1000f)
+        {
+
+            allsize(((InsaneMemory.nowopenedobj - 900f) / 100 + 11).roundToInt())
+        }
+        if(InsaneMemory.nowopenedobj < 999f)
+        {
+            allsize(0)
+        }
+        if (!IsClosing){
+            if(BindingClass.allitemslayout.visibility == View.VISIBLE && BindingClass.allitemslayout1.visibility == View.VISIBLE){
+                BindingClass.cardView.animate().apply { //Если все открыты
+                    duration = 500
+                    translationY(InsaneMemory.secondobj)
+                }
+                BindingClass.cardView0.animate().apply {
+                    duration = 500
+                    translationY(InsaneMemory.thirdobj)
+                }
+            }
+            if(BindingClass.allitemslayout1.visibility == View.VISIBLE && BindingClass.allitemslayout.visibility != View.VISIBLE){
+                BindingClass.cardView.animate().apply { //Если открыта только 1
+                    duration = 500
+                    translationY(InsaneMemory.tempobj)
+                }
+                BindingClass.cardView0.animate().apply {
+                    duration = 500
+                    translationY(InsaneMemory.tempobj)
+                }
+            }
+            if(BindingClass.allitemslayout.visibility == View.VISIBLE && BindingClass.allitemslayout1.visibility != View.VISIBLE){
+                BindingClass.cardView0.animate().apply { //Если открыта только 2
+                    duration = 500
+                    translationY(InsaneMemory.thirdobj - InsaneMemory.tempobj)
+                }
+            }
+        }
+        else{
+            if(BindingClass.allitemslayout.visibility == View.GONE && BindingClass.allitemslayout1.visibility == View.GONE){ //Все закрыты
+                BindingClass.cardView.animate().apply {
+                    duration = 500
+                    translationY(0f)
+                }
+                BindingClass.cardView0.animate().apply {
+                    duration = 500
+                    translationY(0f)
+                }
+            }
+            if(BindingClass.allitemslayout.visibility == View.VISIBLE && BindingClass.allitemslayout1.visibility == View.GONE){
+                BindingClass.cardView.animate().apply {
+                    duration = 500
+                    translationY(0f)
+                }
+                BindingClass.cardView0.animate().apply { //Если открыта только 2
+                    duration = 500
+                    translationY(InsaneMemory.thirdobj - InsaneMemory.tempobj)
+                }
+            }
+            if(BindingClass.allitemslayout.visibility == View.GONE && BindingClass.allitemslayout1.visibility == View.VISIBLE){
+                BindingClass.cardView.animate().apply { //Если открыта только 1
+                    duration = 500
+                    translationY(InsaneMemory.tempobj)
+                }
+                BindingClass.cardView0.animate().apply {
+                    duration = 500
+                    translationY(InsaneMemory.tempobj)
+                }
+            }
+        }
     }
 }
