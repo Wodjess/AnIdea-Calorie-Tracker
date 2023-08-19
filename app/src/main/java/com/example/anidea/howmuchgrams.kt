@@ -18,10 +18,10 @@ class howmuchgrams : AppCompatActivity() {
         setContentView(BindingClass.root)
 
         BindingClass.textView4.text = intent.getStringExtra("Name")
-        BindingClass.textView16.text = "Б: " + intent.getStringExtra("potein")
-        BindingClass.textView17.text = "Ж: " + intent.getStringExtra("fat")
-        BindingClass.textView18.text = "У: " + intent.getStringExtra("carb")
-        BindingClass.textView22.text = "Всего каллорий: " + intent.getStringExtra("calories")
+        BindingClass.textView16.text = "Всего каллорий: " + intent.getStringExtra("calories")
+        BindingClass.textView17.text = intent.getStringExtra("carb")
+        BindingClass.textView18.text = "Ж: " + intent.getStringExtra("fat")
+        BindingClass.textView22.text = "Всего каллорий: " + intent.getStringExtra("potein")
 
         try {
             BindingClass.imageView61.setImageResource(R.drawable.foodimg)

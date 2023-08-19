@@ -33,8 +33,6 @@ class addnewfood : AppCompatActivity() {
                 BindingClass.imageView7.setImageURI(aga.ImageUri)
 
             }
-            //result.data?.getStringExtra("reg")
-
         }
         BindingClass.imageView7.setOnClickListener(){
             val intent = Intent()
@@ -52,7 +50,7 @@ class addnewfood : AppCompatActivity() {
                 }
                 isallgood++
             }
-            if(BindingClass.a2.text.toString().length >= 2){
+            if(BindingClass.a2.text.toString().length >= 1){
                 try {
                     val test:Double = BindingClass.a2.text.toString().toDouble()
                     i.putExtra("CaloriesInformation", BindingClass.a2.text.toString())
@@ -62,7 +60,7 @@ class addnewfood : AppCompatActivity() {
 
                 }
             }
-            if(BindingClass.a3.text.toString().length >= 2){
+            if(BindingClass.a3.text.toString().length >= 1){
                 try {
                     val test:Double = BindingClass.a3.text.toString().toDouble()
                     i.putExtra("ProteinInformation", BindingClass.a3.text.toString())
@@ -73,7 +71,7 @@ class addnewfood : AppCompatActivity() {
                 }
 
             }
-            if(BindingClass.a4.text.toString().length >= 2){
+            if(BindingClass.a4.text.toString().length >= 1){
                 try {
                     val test:Double = BindingClass.a4.text.toString().toDouble()
                     i.putExtra("FatInformation", BindingClass.a4.text.toString())
@@ -84,7 +82,7 @@ class addnewfood : AppCompatActivity() {
                 }
 
             }
-            if(BindingClass.a5.text.toString().length >= 2){
+            if(BindingClass.a5.text.toString().length >= 1){
                 try {
                     val test:Double = BindingClass.a5.text.toString().toDouble()
                     i.putExtra("CarbInformation", BindingClass.a5.text.toString())
@@ -104,7 +102,6 @@ class addnewfood : AppCompatActivity() {
                 builder22.setTitle("Произошла ошибка")
                 builder22.setMessage("Проверьте, чтобы все поля были заполнены и имели правильную информацию")
                 builder22.setNeutralButton("Oк") { dialogInterface, i ->
-                    
                 }
                 builder22.show()
             }

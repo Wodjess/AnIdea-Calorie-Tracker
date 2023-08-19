@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anidea.databinding.RecycledviewoffoodsBinding
 import java.net.BindException
+import kotlin.math.roundToInt
 
 data class ModelFood(val name:String?, val Calories:String?, val value:String?, val Fat:Double?, val Protein:Double?, val carb:Double?,val image:Uri?, val id:Int = (Int.MIN_VALUE..Int.MAX_VALUE).random()){
 
@@ -27,7 +28,7 @@ class ModelFoodAdapter : RecyclerView.Adapter<ModelFoodAdapter.ModelPlan>()
         fun bind(model: ModelFood){
             binding.textView8.text = model.name
             binding.textView14.text = model.value
-            binding.textView15.text = model.Calories + " ккал"
+            binding.textView15.text = model.Protein?.roundToInt().toString() + " ккал"
             binding.MainCardView.setOnClickListener(){
                 newFoodMemory.FoodTemp = model
             }

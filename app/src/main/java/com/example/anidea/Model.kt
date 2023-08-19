@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.anidea.databinding.ActivityMainBinding
 import com.example.anidea.databinding.RecyclerviewBinding
 import com.example.anidea.size.adapter
 import com.example.anidea.size.adaptery
 import com.example.anidea.size.adapterz
 import java.lang.Exception
 import java.util.*
+import kotlin.math.roundToInt
 
 data class Model(val name:String, val v:String, val calories:String,val proteins:String,val fats:String,val carbs:String,val whereFood:Int, val image:Uri?, val Position:Int = (Int.MIN_VALUE..Int.MAX_VALUE).random()){
 
@@ -70,6 +72,7 @@ class ModelAdapter : RecyclerView.Adapter<ModelAdapter.ModelPlan>()
                 DetailInformation.allcarbs -= ((resultmodel?.v.toString().toDouble() / 100).toDouble() * resultmodel?.carbs.toString().toDouble())
                 DetailInformation.ischanged = true
             }
+
             if(resultmodel?.whereFood == 2){
                 InsaneMemory.secondobj -= 100f; InsaneMemory.thirdobj -= 100f; InsaneMemory.tempobj -= 100f
             }
